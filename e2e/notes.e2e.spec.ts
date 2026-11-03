@@ -3,7 +3,6 @@ import { test, expect } from '@playwright/test';
 const baseURL = 'http://localhost:4000';
 
 test('debería listar las notas sembradas correctamente (happy path)', async () => {
-  // Crear contexto, sembrar y hacer la petición sin cerrarlo antes
   const ctx = await test.request.newContext({ baseURL });
   await ctx.post('/__test__/reset');
   await ctx.post('/__test__/seed');
@@ -11,7 +10,6 @@ test('debería listar las notas sembradas correctamente (happy path)', async () 
   const res = await ctx.get('/notes');
   expect(res.status()).toBe(200);
   const data = await res.json();
-  // resetAndSeed deja 2 notas, así que deberíamos tener al menos 2
   expect(data).toHaveLength(2);
   expect(data[0].title).toBeDefined();
   expect(data[1].title).toBeDefined();
@@ -19,7 +17,6 @@ test('debería listar las notas sembradas correctamente (happy path)', async () 
 });
 
 test('debería regresar 404 al buscar una nota que no existe (caso de error)', async () => {
-  // Crear contexto, sembrar y hacer la petición sin cerrarlo antes
   const ctx = await test.request.newContext({ baseURL });
   await ctx.post('/__test__/reset');
   await ctx.post('/__test__/seed');
